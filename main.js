@@ -40,6 +40,7 @@ function render() {
         /* this sets the text content of the square of the same position to the mark on the board. */
         squares[index].textContent = mark;
     });
+    win = getWinner();
     /* if win is 'T' then 'It's a tie!', if the game has been won, display winner, else, display who's turn it is. */
     messages.textContent = win === 'T' ? `It's a tie!` : win ? `${win} wins the game!` : `It's ${turn}'s turn!`;
 }
@@ -55,8 +56,9 @@ function handleTurn(event) {
         /* if it is X's turn, assign turn to 'O', else assign turn to 'X' */
         turn = turn === 'X' ? 'O' : 'X';
     }
-    win = getWinner();
-    render();
+    if(win == null) {
+        render();
+    }
 };
 
 function getWinner() {
