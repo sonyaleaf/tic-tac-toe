@@ -13,6 +13,7 @@ const winningCombos = [
 let board;
 let turn;
 let win;
+let winningCombo;
 /*----- cached element references -----*/
 const squares = Array.from(document.querySelectorAll('#board div'));
 const messages = document.querySelector('h2');
@@ -24,6 +25,12 @@ function init() {
     /* clear win and set turn to 'X' on reset */
     win = null;
     turn = 'X';
+
+    /* reset styling for winning squares */
+    for(i = 0; i < 9; i++) {
+        var elm = document.getElementById("square" + i);
+        elm.className = "square";
+    }
 
     board = [
         '', '', '',
@@ -41,6 +48,12 @@ function render() {
         squares[index].textContent = mark;
     });
     win = getWinner();
+    if(win != null && win != 'T') {
+        winningCombo.forEach(function(item) {
+            var elm = document.getElementById("square" + item);
+            elm.className = "square winning-cell";
+        });
+    }
     /* if win is 'T' then 'It's a tie!', if the game has been won, display winner, else, display who's turn it is. */
     messages.textContent = win === 'T' ? `It's a tie!` : win ? `${win} wins the game!` : `It's ${turn}'s turn!`;
 }
@@ -66,7 +79,10 @@ function getWinner() {
     winningCombos.forEach(function(combo, index) {
         /* iterate through each winning combo, check that there is a mark on the board at the first index in the combo, 
          check that all other indices in the combo have the same mark, if all true- set winner to mark at first index of the combo */
-        if (board[combo[0]] && board[combo[0]] === board[combo[1]] && board[combo[0]] === board[combo[2]]) winner = board[combo[0]];
+        if (board[combo[0]] && board[combo[0]] === board[combo[1]] && board[combo[0]] === board[combo[2]]) {
+            winner = board[combo[0]];
+            winningCombo = combo;
+        }
     });
     /* return winner if there is a winner, if there are unused spaces on the board return null,
      if there is no winner and no empty spaces return 'T' for tie */

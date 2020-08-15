@@ -42,3 +42,6 @@ h2 {
     width: 100px;
     margin: 10px;
 }
+.winning-cell {
+    color: blue;
+}
